@@ -1,0 +1,8 @@
+# -----------------------------------------------------------------------------
+- platform: template
+  sensors:
+    vs_lumina_exterioara:
+      friendly_name: "VS Lumină exterioară"
+      unique_id: "vs_lumina_exterioara"
+      device_class: light
+      value_template: "{{ states('sensor.aqara_sensor_movement_3_illuminance')|float > 15.0 }}"

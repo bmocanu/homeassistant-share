@@ -1,0 +1,122 @@
+binary_sensor:
+# ---------------------------------------------------------------------------
+  - name: 'Buton2_Rf'
+    unique_id: 'buton2_rf'
+    state_topic: 'home_assistant/buton2_rf'
+    payload_on: 'ON'
+    off_delay: 1
+# ---------------------------------------------------------------------------
+  - name: 'Buton11_Rf'
+    unique_id: 'buton11_rf'
+    state_topic: 'home_assistant/buton11_rf'
+    payload_on: 'ON'
+    off_delay: 1
+# ---------------------------------------------------------------------------
+  - name: 'Buton12_Rf'
+    unique_id: 'buton12_rf'
+    state_topic: 'home_assistant/buton12_rf'
+    payload_on: 'ON'
+    off_delay: 1
+# ---------------------------------------------------------------------------
+  - name: 'Buton13_Rf'
+    unique_id: 'buton13_rf'
+    state_topic: 'home_assistant/buton13_rf'
+    payload_on: 'ON'
+    off_delay: 1
+# ---------------------------------------------------------------------------
+  - name: 'Buton14_Rf'
+    unique_id: 'buton14_rf'
+    state_topic: 'home_assistant/buton14_rf'
+    payload_on: 'ON'
+    off_delay: 1
+# ---------------------------------------------------------------------------
+  - name: 'Fum1_Rf Pt Bucatarie'
+    unique_id: 'fum1_rf'
+    state_topic: 'home_assistant/fum1_rf'
+    payload_on: 'ON'
+    off_delay: 1
+    device_class: smoke
+    device:
+      name: 'Fum1_Rf Pt Bucatarie'
+      manufacturer: "PNI"
+      identifiers: 'fum1_rf'
+# ---------------------------------------------------------------------------
+  - name: 'Fum2_Rf Et Debara'
+    unique_id: 'fum2_rf'
+    state_topic: 'home_assistant/fum2_rf'
+    payload_on: 'ON'
+    off_delay: 1
+    device_class: smoke
+    device:
+      name: 'Fum2_Rf Et Debara'
+      manufacturer: "KERUI"
+      identifiers: 'fum2_rf'
+# ---------------------------------------------------------------------------
+  - name: 'Fum3_Rf Atelier'
+    unique_id: 'fum3_rf'
+    state_topic: 'home_assistant/fum3_rf'
+    payload_on: 'ON'
+    off_delay: 1
+    device_class: smoke
+    device:
+      name: 'Fum3_Rf Atelier'
+      manufacturer: "PNI"
+      identifiers: 'fum3_rf'
+# ---------------------------------------------------------------------------
+  - name: 'Fum4_Rf Garaj mare'
+    unique_id: 'fum4_rf'
+    state_topic: 'home_assistant/fum4_rf'
+    payload_on: 'ON'
+    off_delay: 1
+    device_class: smoke
+    device:
+      name: 'Fum4_Rf Garaj mare'
+      manufacturer: "PNI"
+      identifiers: 'fum4_rf'
+# ---------------------------------------------------------------------------
+  - name: 'Misc4_Rf Garaj mare'
+    unique_id: 'misc4_rf'
+    state_topic: 'home_assistant/misc4_rf'
+    off_delay: 1
+    payload_on: 'ON'
+    device_class: motion
+    device:
+      name: 'Misc4_Rf Garaj mare'
+      manufacturer: "Blitzwolf"
+      identifiers: 'misc4_rf'
+# ---------------------------------------------------------------------------
+  - name: 'Inund3_Rf Pt Bucatarie Centrala Furtun'
+    unique_id: 'inund3_rf'
+    state_topic: 'home_assistant/inund3_rf'
+    payload_on: 'ON'
+    payload_off: 'OFF'
+    device_class: moisture
+    device:
+      name: 'Inund3_Rf Pt Bucatarie Centrala Furtun'
+      manufacturer: "PNI"
+      identifiers: 'inund3_rf'
+# ---------------------------------------------------------------------------
+  - name: 'Efra6_Rf Et Baie alba Geam'
+    unique_id: 'efra6_rf'
+    state_topic: 'home_assistant/efra6_rf'
+    payload_on: 'ON'
+    payload_off: 'OFF'
+    device_class: window
+    device:
+      name: 'Efra6_Rf Et Baie alba Geam'
+      manufacturer: "PNI"
+      identifiers: 'efra6_rf'
+
+sensor:
+# ---------------------------------------------------------------------------
+  - name: 'VS Statie Bresser'
+    state_topic: 'home_assistant/statie_bresser/state'
+    json_attributes_topic: 'home_assistant/statie_bresser/data'
+    force_update: true
+    icon: 'mdi:weather-night-partly-cloudy'
+# ---------------------------------------------------------------------------
+  - name: 'Priza3_Wifi Et Baie maro Masina spalat rufe'
+    state_topic: 'home_assistant/priza3wifi/POWER1'
+    json_attributes_topic: 'home_assistant/priza3wifi/data'
+    force_update: true
+    icon: 'mdi:power-socket-de'

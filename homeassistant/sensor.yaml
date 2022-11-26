@@ -1,0 +1,31 @@
+# -----------------------------------------------------------------------------
+- platform: template
+  sensors:
+    vs_bresser_temperature:
+      friendly_name: "Bresser Temperatura exterioară"
+      unique_id: "vs_bresser_temperature"
+      unit_of_measurement: "°C"
+      value_template: "{{ state_attr('sensor.vs_statie_bresser', 'temperature_C') }}"
+# -----------------------------------------------------------------------------
+- platform: template
+  sensors:
+    vs_bresser_humidity:
+      friendly_name: "Bresser Umiditate exterioară"
+      unique_id: "vs_bresser_humidity"
+      unit_of_measurement: "%"
+      value_template: "{{ state_attr('sensor.vs_statie_bresser', 'humidity') }}"
+# -----------------------------------------------------------------------------
+- platform: template
+  sensors:
+    time_templated:
+      value_template: "{{ now().strftime('%H:%M') }}"
+      friendly_name: ''
+      icon_template: 'mdi:clock'
+    date_templated:
+      value_template: "{{ now().strftime('%d %B, %Y') }}"
+      friendly_name: ''
+      icon_template: 'mdi:clock'
+    weekday_templated:
+      value_template: "{{ now().strftime('%A') }}"
+      friendly_name: ''
+      icon_template: 'mdi:clock'

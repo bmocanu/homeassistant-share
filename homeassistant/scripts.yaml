@@ -1,0 +1,17 @@
+timer_pt_bucatarie:
+  alias: Timer Pt Bucatarie
+  icon: mdi:alarm
+  sequence:
+  - repeat:
+      while: '{{ states("input_number.pt_bucatarie_timer_minutes")|int > 0 }}'
+      sequence:
+      - delay: 60
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.pt_bucatarie_timer_minutes
+          value: '{{  states("input_number.pt_bucatarie_timer_minutes")|int - 1 }}'
+  - service: tts.google_translate_say
+    data_template:
+      entity_id: media_player.boxa1_pt_bucatarie
+      message: "Cronometru terminat"
+      language: ro

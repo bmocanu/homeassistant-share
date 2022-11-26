@@ -1,0 +1,38 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+python_script:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+http:
+  server_port: 8123
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - ip/24
+
+homeassistant:
+  customize: !include customize.yaml
+  # media_dirs:
+  # media: /media
+  # recording: /mnt/recordings
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+frontend:
+  themes: !include themes.yaml
+
+media_player:
+  - platform: mpd
+    host: ip
+    port: 26600
+    name: mpd0
+
+sensor: !include sensor.yaml
+binary_sensor: !include binary-sensor.yaml
+mqtt: !include mqtt-sensor.yaml

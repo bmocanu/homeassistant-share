@@ -1,0 +1,35 @@
+- id: '1661022931332'
+  name: Becuri Acces Etaj
+  entities:
+    light.ikea_bec_1000lm_1_level_light_color_on_off:
+      min_mireds: 250
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      off_with_transition: false
+      off_brightness: 76
+      friendly_name: Bec2 Pt Antreu level, light_color, on_off
+      supported_features: 40
+      state: 'off'
+    light.lumi_lumi_light_aqcn02_level_light_color_on_off:
+      min_mireds: 153
+      max_mireds: 370
+      supported_color_modes:
+      - color_temp
+      off_with_transition: false
+      off_brightness: 102
+      friendly_name: Bec1 Et Hol level, light_color, on_off
+      supported_features: 40
+      state: 'off'
+    light.lumi_lumi_light_aqcn02_47ef5e04_level_light_color_on_off:
+      min_mireds: 153
+      max_mireds: 370
+      supported_color_modes:
+      - color_temp
+      off_with_transition: false
+      off_brightness: 204
+      friendly_name: Bec6 Et Bucatarie on_off
+      supported_features: 40
+      state: 'off'
+  icon: mdi:lightbulb-multiple
+  metadata: {}

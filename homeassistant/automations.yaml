@@ -1,0 +1,691 @@
+- id: '1610714757765'
+  alias: Efra1 Usa Pt Antreu notificare deschidere
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: b832995abea148cd027b1a3d3a723713
+    entity_id: binary_sensor.lumi_lumi_sensor_magnet_aq2_81d64c03_on_off
+    domain: binary_sensor
+  condition:
+  - condition: time
+    after: 00:00
+    before: 06:00
+  action:
+  - service: notify.pushover
+    data:
+      title: Deschidere ușă antreu.
+      message: Senzorul de la ușa din antreu este dechis.
+      data:
+        priority: 1
+  mode: single
+- id: '1610714830845'
+  alias: Efra2 Geam Pt Antreu notificare deschidere
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 062dbb612f1527733bb4dcd6fd0d8321
+    entity_id: binary_sensor.lumi_lumi_sensor_magnet_aq2_on_off
+    domain: binary_sensor
+  condition:
+  - condition: time
+    after: 00:00
+    before: 06:00
+  action:
+  - service: notify.pushover
+    data:
+      title: Deschidere geam antreu.
+      message: Senzorul de la geamul din antreu este dechis.
+      data:
+        priority: 1
+  mode: single
+- id: '1611503496471'
+  alias: Inund1 Beci centrala notificare detectie
+  description: ''
+  trigger:
+  - type: moist
+    platform: device
+    device_id: f912c23fb78478a408f8e03049ad1365
+    entity_id: binary_sensor.inund1_beci_centrala_ias_zone
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.pushover
+    data:
+      title: Inundație beci centrală
+      message: Senzor umed pentru beci centrală
+      data:
+        priority: 1
+  mode: single
+- id: '1611503609274'
+  alias: Gaz1 Pt Bucatarie Aragaz notificare detectie
+  description: ''
+  trigger:
+  - type: gas
+    platform: device
+    device_id: 61b1624432a0aad53f43d65dc8f3effc
+    entity_id: binary_sensor.gaz1_pt_bucatarie_ias_zone
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.pushover
+    data:
+      title: Emisie gaz parter bucătărie aragaz
+      message: Detectare emisie gaz de senzorul pentru parter bucătărie aragaz
+      data:
+        priority: 2
+        retry: 30
+        expire: 300
+        sound: persistent
+  mode: single
+- id: '1611503941602'
+  alias: Efra3 Geam Pt Bucatarie notificare deschidere
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 5aec3a9dd9b778cd0a010e62e5cc71dc
+    entity_id: binary_sensor.lumi_lumi_sensor_magnet_aq2_72cb2c03_on_off
+    domain: binary_sensor
+  condition:
+  - condition: time
+    after: 00:00
+    before: 06:00
+  action:
+  - service: notify.pushover
+    data:
+      title: Deschidere geam parter bucătărie.
+      message: Senzorul de la geamul din parter bucătărie este dechis.
+      data:
+        priority: 1
+  mode: single
+- id: rfbridge_demultiplexer
+  alias: MQTT Sonoff RF bridge demultiplexer
+  trigger:
+  - platform: mqtt
+    topic: sonoff_rf/RESULT
+  action:
+  - service: python_script.rfbridge_demux
+    data_template:
+      payload: '{{trigger.payload_json.RfReceived.Data}}'
+  initial_state: true
+  mode: queued
+  max: 10
+- id: '1612208328989'
+  alias: Fum1_Rf Pt Bucatarie notificare detectie fum
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.fum1_rf_pt_bucatarie
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.pushover
+    data:
+      title: Emisie fum parter bucătărie
+      message: Detectare emisie fum de senzorul pentru parter bucătărie - {{now().strftime("%Y-%m-%d
+        %H:%M:%S")}}
+      data:
+        priority: 2
+        retry: 30
+        expire: 300
+        sound: persistent
+      target: bogdan
+  mode: single
+- id: '1612208940138'
+  alias: Fum2_Rf Et Debara notificare detectie fum
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.fum2_rf_beci_centrala
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.pushover
+    data:
+      title: Emisie fum etaj debara
+      message: Detectare emisie fum de senzorul pentru etaj debara - {{now().strftime("%Y-%m-%d
+        %H:%M:%S")}}
+      data:
+        priority: 2
+        retry: 30
+        expire: 300
+        sound: persistent
+      target: bogdan
+  mode: single
+- id: '1613252489745'
+  alias: VS Statie Bresser MQTT redirectare stare
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: home_assistant/statie_bresser/data
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: home_assistant/statie_bresser/state
+      payload: 'on'
+  mode: single
+- id: '1615054471527'
+  alias: MQTT Media trigger call to media_trigger script
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: home_assistant/media_trigger
+  condition: []
+  action:
+  - service: python_script.media_trigger
+    data_template:
+      payload: '{{trigger.payload}}'
+  mode: single
+- id: '1615063825890'
+  alias: MQTT Play media over Spotify
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: home_assistant/play_spotify
+  condition: []
+  action:
+  - service: media_player.media_stop
+    data: {}
+    target:
+      device_id: 6cfa9d0821c9ef03f24a89271cad0102
+  - service: media_player.select_source
+    data:
+      source: Boxa1 Pt Bucatarie
+    target:
+      device_id: 6cfa9d0821c9ef03f24a89271cad0102
+  - service: media_player.shuffle_set
+    data:
+      shuffle: true
+    target:
+      device_id: 6cfa9d0821c9ef03f24a89271cad0102
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.spotify_bogdan
+    data_template:
+      media_content_type: playlist
+      media_content_id: '{{ trigger.payload }}'
+  mode: single
+- id: '1626454335390'
+  alias: Buton12_Rf Test actionare
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.buton12_rf
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: media_player.volume_set
+    target:
+      entity_id: media_player.mpd0
+    data:
+      volume_level: 1
+  - service: media_player.shuffle_set
+    target:
+      entity_id: media_player.mpd0
+    data:
+      shuffle: true
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.mpd0
+    data:
+      media_content_type: directory
+      media_content_id: rock
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.boxa1_pt_bucatarie
+    data:
+      media_content_id: http://ip:28800
+      media_content_type: audio/mp3
+  mode: single
+- id: '1626454958769'
+  alias: Misc4_Rf Garaj mare detectie miscare
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.misc4_rf_beci_centrala
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: time
+    after: 00:00
+    before: 07:00
+  action:
+  - service: notify.pushover
+    data:
+      title: Detectare mișcare in garajul mare
+      message: Detectare mișcare in garajul mare
+      data:
+        priority: 1
+        retry: 30
+        expire: 300
+        sound: persistent
+  mode: single
+- id: '1634404713343'
+  alias: Buton11_Rf / 13_Rf / 14_Rf Comutare lumini etaj
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.buton11_rf
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.buton13_rf
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.buton14_rf
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - type: toggle
+    device_id: 0b945d2ace50fc208678643bc26f06fb
+    entity_id: light.ikea_bec_1000lm_1_level_light_color_on_off
+    domain: light
+  - type: toggle
+    device_id: d50dc599218a28279bfd4358d7230fc5
+    entity_id: light.lumi_lumi_light_aqcn02_level_light_color_on_off
+    domain: light
+  - type: toggle
+    device_id: 821521394220a223b502f8b8e381e49b
+    entity_id: light.lumi_lumi_light_aqcn02_47ef5e04_level_light_color_on_off
+    domain: light
+  mode: single
+- id: '1635529399714'
+  alias: Misc6 Pt Camera de zi aprindere ecran tableta
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 543f6aef655e6d661f1d35071d692c9e
+    entity_id: binary_sensor.misc6_pt_camera_de_zi_ias_zone
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: wallpanel/tab1_wallpanel/command
+      payload: '{"wake": true}'
+  mode: single
+- id: '1638305343170'
+  alias: Boxa1 Pt Bucatarie stop - oprire mpd0
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 25e9b7ab10588522d5635134a82bd848
+    domain: media_player
+    entity_id: media_player.boxa1_pt_bucatarie
+    type: paused
+  condition: []
+  action:
+  - service: media_player.media_stop
+    target:
+      entity_id: media_player.mpd0
+  mode: single
+- id: '1640193370329'
+  alias: Priza1 Pt Antreu Brad pornire
+  description: ''
+  trigger:
+  - platform: time
+    at: '17:30:00'
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 234940fd98eebc4cfa1056d9da4b4edd
+    entity_id: switch.lumi_lumi_plug_mmeu01_on_off
+    domain: switch
+  mode: single
+- id: '1640193413814'
+  alias: Priza1 Pt Antreu Brad oprire
+  description: ''
+  trigger:
+  - platform: time
+    at: '23:30:00'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 234940fd98eebc4cfa1056d9da4b4edd
+    entity_id: switch.lumi_lumi_plug_mmeu01_on_off
+    domain: switch
+  mode: single
+- id: '1640281936750'
+  alias: Priza2 Et Instalatii balcoane pornire
+  description: ''
+  trigger:
+  - platform: time
+    at: '17:30:00'
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 9e96dba6bb5b76edaceb29c961e07fc6
+    entity_id: switch.lumi_lumi_plug_mmeu01_2f227b3c_on_off
+    domain: switch
+  mode: single
+- id: '1640281975751'
+  alias: Priza2 Et Instalatii balcoane oprire
+  description: ''
+  trigger:
+  - platform: time
+    at: '23:30:00'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 9e96dba6bb5b76edaceb29c961e07fc6
+    entity_id: switch.lumi_lumi_plug_mmeu01_2f227b3c_on_off
+    domain: switch
+  mode: single
+- id: '1660591188230'
+  alias: Octavia iV Baterie 100% notificare pe telefon
+  description: ''
+  trigger:
+  - type: battery_level
+    platform: device
+    device_id: d31f3bfd8a7bc868f60bbb91b719a98c
+    entity_id: sensor.octavia_iv_battery_level
+    domain: sensor
+    above: 99
+  condition: []
+  action:
+  - service: notify.pushover
+    data:
+      message: Octavia iV battery charging level at 100%
+      title: Octavia iV charged
+      target: Bogdan
+  mode: single
+- id: '1664647555574'
+  alias: Misc7 Atelier detectie miscare
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 274c8264ec82f79de81bf3affaeb9c55
+    entity_id: binary_sensor.lumi_lumi_sensor_motion_aq2_iaszone
+    domain: binary_sensor
+  condition:
+  - condition: time
+    before: 07:00:00
+    after: 00:00:00
+  action:
+  - service: notify.pushover
+    data:
+      message: '{{now().strftime("%Y-%m-%d %H:%M:%S")}}'
+      title: Detectare mișcare in atelier
+      target: bogdan
+      data:
+        priority: -1
+  mode: single
+- id: '1664743232160'
+  alias: Fum3_Rf Atelier notificare detectie fum
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.fum3_rf_atelier
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.pushover
+    data:
+      title: Emisie fum atelier
+      message: Detectare emisie fum de senzorul din atelier - {{now().strftime("%Y-%m-%d
+        %H:%M:%S")}}
+      data:
+        priority: 2
+        retry: 30
+        expire: 300
+        sound: persistent
+      target: bogdan
+  mode: single
+- id: '1664743386502'
+  alias: Fum4_Rf Garaj mare notificare detectie fum
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.fum4_rf_garaj_mare
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.pushover
+    data:
+      title: Emisie fum garaj mare
+      message: Detectare emisie fum de senzorul din garajul mare - {{now().strftime("%Y-%m-%d
+        %H:%M:%S")}}
+      data:
+        priority: 2
+        retry: 30
+        expire: 300
+        sound: persistent
+      target: bogdan
+  mode: single
+- id: '1664998023684'
+  alias: Buton Sonoff Test apasare buton
+  description: ''
+  trigger:
+  - device_id: d2b4f816931cd90ad24484d51a047641
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: button
+  condition: []
+  action:
+  - service: notify.pushover
+    data:
+      message: Test apasare Buton Sonoff - {{now().strftime("%Y-%m-%d %H:%M:%S")}}
+      title: Test apasare Buton Sonoff
+      target: bogdan
+    enabled: false
+  - service: media_player.select_source
+    data:
+      source: Boxa1 Pt Bucatarie
+    target:
+      entity_id: media_player.spotify_bogdan
+  - service: media_player.play_media
+    data:
+      media_content_id: spotify:playlist:37i9dQZEVXcBLhxSXhm63i
+      media_content_type: playlist
+    target:
+      entity_id: media_player.spotify_bogdan
+  mode: single
+- id: '1665483832016'
+  alias: Switch2 Et Debara apasare ON
+  description: ''
+  trigger:
+  - device_id: 3e36ba980f775b9c242c5e59273f73d6
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: turn_on
+  condition: []
+  action:
+  - type: turn_on
+    device_id: d50dc599218a28279bfd4358d7230fc5
+    entity_id: light.lumi_lumi_light_aqcn02_level_light_color_on_off
+    domain: light
+  - type: turn_on
+    device_id: 0b945d2ace50fc208678643bc26f06fb
+    entity_id: light.ikea_bec_1000lm_1_level_light_color_on_off
+    domain: light
+  - type: turn_on
+    device_id: 821521394220a223b502f8b8e381e49b
+    entity_id: light.lumi_lumi_light_aqcn02_47ef5e04_level_light_color_on_off
+    domain: light
+  mode: single
+- id: '1665483892316'
+  alias: Switch2 Et Debara apasare OFF
+  description: ''
+  trigger:
+  - device_id: 3e36ba980f775b9c242c5e59273f73d6
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: turn_off
+  condition: []
+  action:
+  - type: turn_off
+    device_id: d50dc599218a28279bfd4358d7230fc5
+    entity_id: light.lumi_lumi_light_aqcn02_level_light_color_on_off
+    domain: light
+  - type: turn_off
+    device_id: 0b945d2ace50fc208678643bc26f06fb
+    entity_id: light.ikea_bec_1000lm_1_level_light_color_on_off
+    domain: light
+  - type: turn_off
+    device_id: 821521394220a223b502f8b8e381e49b
+    entity_id: light.lumi_lumi_light_aqcn02_47ef5e04_level_light_color_on_off
+    domain: light
+  mode: single
+- id: '1666819128858'
+  alias: Buton16 Pt Bucatarie Timer click adaugare 5 minute la timer
+  description: ''
+  trigger:
+  - device_id: 9b96de414b54ab05e3a19dcc575ce446
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: turn_on
+  condition: []
+  action:
+  - service: script.turn_off
+    data: {}
+    target:
+      entity_id: script.timer_pt_bucatarie
+    enabled: true
+  - service: input_number.increment
+    data: {}
+    target:
+      entity_id: input_number.pt_bucatarie_timer_minutes
+    enabled: true
+  - service: tts.google_translate_say
+    data_template:
+      entity_id: media_player.boxa1_pt_bucatarie
+      message: '{{ states("input_number.pt_bucatarie_timer_minutes")|int }} minute'
+      language: ro
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+    enabled: true
+  - service: script.turn_on
+    data: {}
+    target:
+      entity_id: script.timer_pt_bucatarie
+    enabled: true
+  mode: single
+- id: '1666821129578'
+  alias: Buton16 Pt Bucatarie Timer apasare lunga oprire timer
+  description: ''
+  trigger:
+  - device_id: 9b96de414b54ab05e3a19dcc575ce446
+    domain: zha
+    platform: device
+    type: remote_button_long_release
+    subtype: dim_up
+  condition: []
+  action:
+  - service: script.turn_off
+    data: {}
+    target:
+      entity_id: script.timer_pt_bucatarie
+  - service: input_number.set_value
+    data:
+      value: 0
+    target:
+      entity_id: input_number.pt_bucatarie_timer_minutes
+  - service: tts.google_translate_say
+    data:
+      entity_id: media_player.boxa1_pt_bucatarie
+      message: Cronometru oprit
+      language: ro
+  mode: single
+- id: '1667946704390'
+  alias: Misc1 Pt Antreu Usa aprindere banda LED
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 58abadcd772fdbaf2f15c678d377193e
+    entity_id: binary_sensor.misc1_pt_antreu_usa_iaszone
+    domain: binary_sensor
+  condition:
+  - condition: time
+    before: 07:00:00
+    after: '18:00:00'
+  action:
+  - type: turn_on
+    device_id: ceb827e4ac796de336b67bef0b714926
+    entity_id: light.banda1_pt_antreu_light
+    domain: light
+    brightness_pct: 40
+  mode: single
+- id: '1667946783037'
+  alias: Misc1 Pt Antreu Usa stingere banda LED
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: 58abadcd772fdbaf2f15c678d377193e
+    entity_id: binary_sensor.misc1_pt_antreu_usa_iaszone
+    domain: binary_sensor
+  condition:
+  - type: is_no_motion
+    condition: device
+    device_id: 543f6aef655e6d661f1d35071d692c9e
+    entity_id: binary_sensor.misc2_pt_antreu_stalp_iaszone
+    domain: binary_sensor
+  action:
+  - type: turn_off
+    device_id: ceb827e4ac796de336b67bef0b714926
+    entity_id: light.banda1_pt_antreu_light
+    domain: light
+  mode: single
+- id: '1668117538665'
+  alias: Misc2 Pt Antreu Stalp aprindere banda LED
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 543f6aef655e6d661f1d35071d692c9e
+    entity_id: binary_sensor.misc2_pt_antreu_stalp_iaszone
+    domain: binary_sensor
+  condition:
+  - condition: time
+    before: 07:00:00
+    after: '18:00:00'
+  action:
+  - type: turn_on
+    device_id: ceb827e4ac796de336b67bef0b714926
+    entity_id: light.banda1_pt_antreu_light
+    domain: light
+    brightness_pct: 40
+  mode: single
+- id: '1668117592416'
+  alias: Misc2 Pt Antreu Stalp stingere banda LED
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: 543f6aef655e6d661f1d35071d692c9e
+    entity_id: binary_sensor.misc2_pt_antreu_stalp_iaszone
+    domain: binary_sensor
+  condition:
+  - type: is_no_motion
+    condition: device
+    device_id: 58abadcd772fdbaf2f15c678d377193e
+    entity_id: binary_sensor.misc1_pt_antreu_usa_iaszone
+    domain: binary_sensor
+  action:
+  - type: turn_off
+    device_id: ceb827e4ac796de336b67bef0b714926
+    entity_id: light.banda1_pt_antreu_light
+    domain: light
+  mode: single
